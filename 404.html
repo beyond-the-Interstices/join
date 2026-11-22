@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>You're invited · Shared Countdowns</title>
+<meta name="description" content="Count down to the moments that matter, together.">
+<meta property="og:title" content="You're invited to count down together">
+<meta property="og:description" content="Join a shared countdown on Shared Countdowns.">
+<meta name="apple-itunes-app" content="app-id=6787982559">
+<style>
+  :root{--bg:#121214;--card:#1c1c20;--text:#f4f4f6;--muted:#a1a1aa;--gold:#e8a33d;--line:#2c2c32}
+  @media (prefers-color-scheme: light){:root{--bg:#f6f4ef;--card:#fff;--text:#18181b;--muted:#6b6b72;--line:#e7e2d8}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Arabic",sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+  .card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px 22px;text-align:center}
+  .icon{font-size:44px}
+  h1{font-size:22px;margin:10px 0 6px}
+  .sub{color:var(--muted);margin:0 0 18px}
+  .group{font-weight:700;font-size:18px;margin:6px 0 2px}
+  .members{color:var(--muted);font-size:14px;margin-bottom:20px}
+  a.btn,button.btn{display:block;width:100%;padding:14px;border-radius:14px;border:0;font-weight:600;font-size:16px;text-decoration:none;margin:10px 0;cursor:pointer}
+  .primary{background:var(--gold);color:#111}
+  .secondary{background:transparent;color:var(--text);border:1px solid var(--line)!important}
+  .code{font:700 28px ui-monospace,Menlo,monospace;letter-spacing:6px;margin:6px 0}
+  .hint{color:var(--muted);font-size:13px;margin-top:14px}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="icon">🗓️</div>
+  <h1 id="title">You're invited</h1>
+  <p class="sub" id="sub">Count down to the moments that matter, together.</p>
+  <div id="groupBox" class="hidden">
+    <div class="group" id="group"></div>
+    <div class="members" id="members"></div>
+  </div>
+  <div id="invalid" class="hidden sub"></div>
+
+  <div id="actions">
+    <a class="btn primary" id="getApp" href="#">Get the app</a>
+    <a class="btn secondary" id="openApp" href="#">I have the app — open invite</a>
+    <div class="hint" id="codeLabel">Your invite code</div>
+    <div class="code" id="code">——————</div>
+    <button class="btn secondary" id="copy">Copy invite</button>
+    <div class="hint" id="after">After installing, open the app and tap “Paste invite”.</div>
+  </div>
+</main>
+<script>
+(function(){
+  var SUPABASE="https://ltpjpibzxupgjdpvgbdg.supabase.co", KEY="sb_publishable_O5uXf7cMf_uMhXkAsiY5fQ_iGndCf_Q";
+  var APPSTORE="https://apps.apple.com/app/id6787982559";
+  var PLAY="https://play.google.com/store/apps/details?id=com.interstices.sharedcountdowns";
+  var T={
+   en:{title:"You're invited",sub:"Count down to the moments that matter, together.",inv:"{n} invited you to count down together",members:"Members: {m}",get:"Get the app",getIos:"Copy invite & get the app",open:"I have the app — open invite",codeLabel:"Your invite code",copy:"Copy invite",copied:"Copied ✓",after:"After installing, open the app and tap “Paste invite”.",bad:"This invite isn't valid any more. Ask for a new link.",full:"This group is full."},
+   fr:{title:"Vous êtes invité·e",sub:"Comptez les jours jusqu'aux moments qui comptent, ensemble.",inv:"{n} vous invite à compter les jours ensemble",members:"Membres : {m}",get:"Télécharger l'app",getIos:"Copier l'invitation et télécharger",open:"J'ai l'app — ouvrir l'invitation",codeLabel:"Votre code d'invitation",copy:"Copier l'invitation",copied:"Copié ✓",after:"Après l'installation, ouvrez l'app et touchez « Coller l'invitation ».",bad:"Cette invitation n'est plus valide. Demandez un nouveau lien.",full:"Ce groupe est complet."},
+   de:{title:"Du bist eingeladen",sub:"Zählt gemeinsam die Tage bis zu euren besonderen Momenten.",inv:"{n} lädt dich ein, gemeinsam die Tage zu zählen",members:"Mitglieder: {m}",get:"App laden",getIos:"Einladung kopieren & App laden",open:"Ich habe die App — Einladung öffnen",codeLabel:"Dein Einladungscode",copy:"Einladung kopieren",copied:"Kopiert ✓",after:"Öffne nach der Installation die App und tippe auf „Einladung einfügen“.",bad:"Diese Einladung ist nicht mehr gültig. Bitte um einen neuen Link.",full:"Diese Gruppe ist voll."},
+   it:{title:"Sei invitato",sub:"Contate insieme i giorni ai momenti che contano.",inv:"{n} ti invita a contare i giorni insieme",members:"Membri: {m}",get:"Scarica l'app",getIos:"Copia l'invito e scarica l'app",open:"Ho l'app — apri l'invito",codeLabel:"Il tuo codice invito",copy:"Copia invito",copied:"Copiato ✓",after:"Dopo l'installazione, apri l'app e tocca «Incolla invito».",bad:"Questo invito non è più valido. Chiedi un nuovo link.",full:"Questo gruppo è al completo."},
+   es:{title:"Estás invitado",sub:"Contad juntos los días hasta los momentos importantes.",inv:"{n} te invita a contar los días juntos",members:"Miembros: {m}",get:"Descargar la app",getIos:"Copiar invitación y descargar",open:"Ya tengo la app — abrir invitación",codeLabel:"Tu código de invitación",copy:"Copiar invitación",copied:"Copiado ✓",after:"Tras instalarla, abre la app y toca «Pegar invitación».",bad:"Esta invitación ya no es válida. Pide un enlace nuevo.",full:"Este grupo está completo."},
+   pt:{title:"Você foi convidado",sub:"Contem juntos os dias para os momentos importantes.",inv:"{n} convidou você para contar os dias juntos",members:"Membros: {m}",get:"Baixar o app",getIos:"Copiar convite e baixar",open:"Já tenho o app — abrir convite",codeLabel:"Seu código de convite",copy:"Copiar convite",copied:"Copiado ✓",after:"Depois de instalar, abra o app e toque em “Colar convite”.",bad:"Este convite não é mais válido. Peça um novo link.",full:"Este grupo está cheio."},
+   ru:{title:"Вас пригласили",sub:"Считайте дни до важных моментов вместе.",inv:"{n} приглашает вас считать дни вместе",members:"Участники: {m}",get:"Скачать приложение",getIos:"Скопировать приглашение и скачать",open:"У меня есть приложение — открыть",codeLabel:"Ваш код приглашения",copy:"Скопировать приглашение",copied:"Скопировано ✓",after:"После установки откройте приложение и нажмите «Вставить приглашение».",bad:"Это приглашение больше не действует. Попросите новую ссылку.",full:"Эта группа заполнена."},
+   ja:{title:"招待されています",sub:"大切な日までのカウントダウンを一緒に。",inv:"{n}さんが一緒にカウントダウンしようと招待しています",members:"メンバー：{m}",get:"アプリを入手",getIos:"招待をコピーしてアプリを入手",open:"アプリをお持ちの方 — 招待を開く",codeLabel:"招待コード",copy:"招待をコピー",copied:"コピーしました ✓",after:"インストール後、アプリを開いて「招待を貼り付け」をタップしてください。",bad:"この招待は無効になりました。新しいリンクを依頼してください。",full:"このグループは満員です。"},
+   zh:{title:"你收到了邀请",sub:"一起为重要时刻倒计时。",inv:"{n} 邀请你一起倒计时",members:"成员：{m}",get:"获取应用",getIos:"复制邀请并获取应用",open:"我已安装 — 打开邀请",codeLabel:"你的邀请码",copy:"复制邀请",copied:"已复制 ✓",after:"安装后打开应用，点按“粘贴邀请”。",bad:"此邀请已失效，请索取新链接。",full:"该群组已满。"},
+   ar:{title:"تمت دعوتك",sub:"عُدّوا الأيام معًا للحظات المهمة.",inv:"{n} يدعوك للعد التنازلي معًا",members:"الأعضاء: {m}",get:"احصل على التطبيق",getIos:"انسخ الدعوة واحصل على التطبيق",open:"لديّ التطبيق — افتح الدعوة",codeLabel:"رمز الدعوة",copy:"انسخ الدعوة",copied:"تم النسخ ✓",after:"بعد التثبيت، افتح التطبيق واضغط «لصق الدعوة».",bad:"هذه الدعوة لم تعد صالحة. اطلب رابطًا جديدًا.",full:"هذه المجموعة ممتلئة."}
+  };
+  var lang=(navigator.language||"en").slice(0,2).toLowerCase(); var L=T[lang]||T.en;
+  if(lang==="ar"){document.documentElement.dir="rtl";document.documentElement.lang="ar";}
+  function $(i){return document.getElementById(i)}
+  var m=location.pathname.match(/\/j\/([A-Za-z0-9]{4,12})/);
+  var code=m?m[1].toUpperCase():"";
+  var link=location.origin+"/j/"+code;
+  var ua=navigator.userAgent, isIOS=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1), isAndroid=/Android/.test(ua);
+  $("title").textContent=L.title; $("sub").textContent=L.sub; $("codeLabel").textContent=L.codeLabel;
+  $("copy").textContent=L.copy; $("after").textContent=L.after; $("openApp").textContent=L.open;
+  if(!code){ $("actions").classList.add("hidden"); var a=document.createElement("a"); a.className="btn primary"; a.textContent=L.get; a.href=isAndroid?PLAY:APPSTORE; document.querySelector(".card").appendChild(a); return; }
+  $("code").textContent=code;
+  $("openApp").href="sharedcountdowns://join/"+code;
+  var get=$("getApp");
+  if(isAndroid){ get.textContent=L.get; get.href=PLAY+"&referrer="+encodeURIComponent("invite="+code); $("after").classList.add("hidden"); }
+  else { get.textContent=isIOS?L.getIos:L.get; get.href=APPSTORE;
+    get.addEventListener("click",function(){ try{navigator.clipboard.writeText(link);}catch(e){} }); }
+  $("copy").addEventListener("click",function(){ try{navigator.clipboard.writeText(link).then(function(){$("copy").textContent=L.copied;});}catch(e){} });
+  fetch(SUPABASE+"/rest/v1/rpc/preview_invite",{method:"POST",headers:{"apikey":KEY,"Content-Type":"application/json"},body:JSON.stringify({p_code:code})})
+   .then(function(r){return r.ok?r.json():null}).then(function(d){
+     var p=Array.isArray(d)?d[0]:d; if(!p) return;
+     if(p.status==="ok"||p.status==="already_member"){
+       var names=p.member_names||[]; var host=names[0]||"";
+       if(host) $("sub").textContent=L.inv.replace("{n}",host);
+       if(p.space_name){ $("group").textContent="“"+p.space_name+"”"; $("members").textContent=L.members.replace("{m}",names.join(", ")); $("groupBox").classList.remove("hidden"); }
+     } else if(p.status==="full"){ $("invalid").textContent=L.full; $("invalid").classList.remove("hidden"); }
+     else { $("invalid").textContent=L.bad; $("invalid").classList.remove("hidden"); }
+   }).catch(function(){});
+})();
+</script>
+</body>
+</html>
