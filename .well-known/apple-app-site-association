@@ -1,0 +1,17 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "BPCC9CR9KP.com.interstices.SharedCountdowns"
+        ],
+        "components": [
+          {
+            "/": "/j/*",
+            "comment": "Group invite links"
+          }
+        ]
+      }
+    ]
+  }
+}
