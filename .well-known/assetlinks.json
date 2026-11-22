@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.interstices.sharedcountdowns",
+      "sha256_cert_fingerprints": [
+        "48:D6:23:09:4A:A0:31:34:AF:18:26:5A:8A:B6:7B:0B:03:3B:C5:06:C2:A2:95:48:EF:1A:AE:8D:BC:41:79:50"
+      ]
+    }
+  }
+]
